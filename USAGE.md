@@ -99,7 +99,7 @@ QuickMaps/
 **Google Maps APIs Used:**
 - **Maps JavaScript API**: Renders the interactive map
 - **Geocoding API**: Converts addresses to coordinates
-- **Places API**: Enhances location search capabilities
+- **Places API**: Library loaded for potential future enhancements
 
 ### Code Architecture
 

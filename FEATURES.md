@@ -194,14 +194,19 @@ manifest.json (502 bytes)
 ```javascript
 // Example: Add current location button
 function getCurrentLocation() {
-  navigator.geolocation.getCurrentPosition(position => {
-    const pos = {
-      lat: position.coords.latitude,
-      lng: position.coords.longitude
-    };
-    map.setCenter(pos);
-    marker.setPosition(pos);
-  });
+  navigator.geolocation.getCurrentPosition(
+    position => {
+      const pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      map.setCenter(pos);
+      marker.setPosition(pos);
+    },
+    error => {
+      alert('Unable to get current location: ' + error.message);
+    }
+  );
 }
 
 // Example: Add search history
