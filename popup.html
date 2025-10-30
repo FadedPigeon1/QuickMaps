@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Maps</title>
+  <!-- Link to external CSS file for styling -->
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- Main container for the extension popup -->
+  <div class="container">
+    <!-- Header section with title -->
+    <div class="header">
+      <h1>Quick Maps</h1>
+    </div>
+
+    <!-- Search section with input and button -->
+    <div class="search-section">
+      <input 
+        type="text" 
+        id="search-input" 
+        placeholder="Search for a place..." 
+        autocomplete="off"
+      />
+      <button id="search-button">Search</button>
+    </div>
+
+    <!-- Map container where Google Map will be displayed -->
+    <div id="map"></div>
+  </div>
+
+  <!-- Load Google Maps JavaScript API with your API key -->
+  <!-- Replace YOUR_API_KEY with your actual Google Maps API key -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+  
+  <!-- Load our custom JavaScript file -->
+  <script src="popup.js"></script>
+</body>
+</html>
