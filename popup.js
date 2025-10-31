@@ -1,99 +1,116 @@
-// Global variables to store map and geocoder instances
-let map;
-let geocoder;
-let marker;
-
 /**
- * Initialize the Google Map when the page loads
- * This function is called automatically when the Google Maps API is ready
+ * QuickMaps - Uses Google Maps Embed API (iframe)
+ * This is the only approach that works with Chrome Extension Manifest V3 CSP restrictions
  */
-function initMap() {
-  // Default location - New York City coordinates
-  const defaultLocation = { lat: 40.7128, lng: -74.0060 };
 
-  // Create a new map instance centered on the default location
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: defaultLocation,
-    zoom: 12,
-    // Optional: Add custom map styling options
-    mapTypeControl: true,
-    streetViewControl: false,
-    fullscreenControl: false,
-  });
+document.addEventListener('DOMContentLoaded', () => {
+  const originInput = document.getElementById('origin-input');
+  const destinationInput = document.getElementById('destination-input');
+  const directionsButton = document.getElementById('directions-button');
+  const mapFrame = document.getElementById('map');
 
-  // Initialize geocoder for converting addresses to coordinates
-  geocoder = new google.maps.Geocoder();
-
-  // Create a marker for showing the searched location
-  marker = new google.maps.Marker({
-    map: map,
-    position: defaultLocation,
-  });
-}
-
-/**
- * Search for a place and update the map
- * @param {string} searchQuery - The place name or address to search for
- */
-function searchPlace(searchQuery) {
-  // Check if the search query is empty
-  if (!searchQuery || searchQuery.trim() === '') {
-    alert('Please enter a location to search');
+  // Check if API key is available from secrets.js
+  if (typeof GOOGLE_MAPS_API_KEY === 'undefined' || !GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === 'REPLACE_WITH_YOUR_API_KEY') {
+    console.error('GOOGLE_MAPS_API_KEY is not set. Create secrets.js from secrets.example.js and add your key.');
+    mapFrame.srcdoc = '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-family:sans-serif;color:#666;text-align:center;padding:20px;">API key not configured.<br>See console for details.</div>';
     return;
   }
 
-  // Use the Geocoder to convert the address/place name to coordinates
-  geocoder.geocode({ address: searchQuery }, (results, status) => {
-    if (status === 'OK') {
-      // If search was successful, get the location coordinates
-      const location = results[0].geometry.location;
-
-      // Center the map on the new location
-      map.setCenter(location);
-
-      // Update marker position
-      marker.setPosition(location);
-
-      // Optionally adjust zoom level based on location type
-      if (results[0].geometry.viewport) {
-        map.fitBounds(results[0].geometry.viewport);
-      } else {
-        map.setZoom(15);
-      }
-    } else {
-      // If search failed, show an error message
-      alert('Location not found: ' + status + '\nPlease try a different search term.');
+  /**
+   * Load directions between two locations using the Maps Embed API
+   * @param {string} origin - The starting point
+   * @param {string} destination - The destination point
+   */
+  function loadDirections(origin, destination) {
+    if (!origin || origin.trim() === '' || !destination || destination.trim() === '') {
+      alert('Please enter both starting point and destination');
+      return;
     }
-  });
-}
+    const encodedOrigin = encodeURIComponent(origin.trim());
+    const encodedDestination = encodeURIComponent(destination.trim());
+    // Use the Embed API "directions" mode
+    const src = `https://www.google.com/maps/embed/v1/directions?key=${encodeURIComponent(GOOGLE_MAPS_API_KEY)}&origin=${encodedOrigin}&destination=${encodedDestination}`;
+    mapFrame.src = src;
+  }
 
-/**
- * Event listener for when the DOM is fully loaded
- */
-document.addEventListener('DOMContentLoaded', () => {
-  // Initialize the map
-  initMap();
+  // Set initial default view (centered on Houston, TX)
+  const defaultCenterSrc = `https://www.google.com/maps/embed/v1/view?key=${encodeURIComponent(GOOGLE_MAPS_API_KEY)}&center=29.7601,-95.3701&zoom=12`;
+  mapFrame.src = defaultCenterSrc;
 
-  // Get references to the search input and button elements
-  const searchInput = document.getElementById('search-input');
-  const searchButton = document.getElementById('search-button');
-
-  /**
-   * Handle search button click
-   */
-  searchButton.addEventListener('click', () => {
-    const searchQuery = searchInput.value;
-    searchPlace(searchQuery);
+  // Handle directions button click
+  directionsButton.addEventListener('click', () => {
+    loadDirections(originInput.value, destinationInput.value);
   });
 
-  /**
-   * Handle Enter key press in the search input
-   * This allows users to search by pressing Enter instead of clicking the button
-   */
-  searchInput.addEventListener('keypress', (event) => {
+  // Handle Enter key press in origin input
+  originInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
-      const searchQuery = searchInput.value;
-      searchPlace(searchQuery);
+      destinationInput.focus();
     }
+  });
+
+  // Handle Enter key press in destination input
+  destinationInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      loadDirections(originInput.value, destinationInput.value);
+    }
+  });
+
+  // Handle "Use My Location" button click
+  const useLocationButton = document.getElementById('use-location-button');
+  useLocationButton.addEventListener('click', () => {
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser');
+      return;
+    }
+
+    // Show loading state
+    useLocationButton.textContent = '⌛ Getting location...';
+    useLocationButton.disabled = true;
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        // Success - got the user's position
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        
+        // Set the origin input to the coordinates
+        originInput.value = `${lat},${lng}`;
+        
+        // Reset button state
+        useLocationButton.textContent = '📍 My Location';
+        useLocationButton.disabled = false;
+        
+        // Focus the destination input so user can type destination
+        destinationInput.focus();
+      },
+      (error) => {
+        // Error getting location
+        let errorMessage = 'Unable to get your location. ';
+        switch(error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage += 'Permission denied. Please allow location access.';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage += 'Location information unavailable.';
+            break;
+          case error.TIMEOUT:
+            errorMessage += 'Request timed out.';
+            break;
+          default:
+            errorMessage += 'An unknown error occurred.';
+        }
+        alert(errorMessage);
+        
+        // Reset button state
+        useLocationButton.textContent = '📍 My Location';
+        useLocationButton.disabled = false;
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
+    );
   });
 });

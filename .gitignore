@@ -1,3 +1,8 @@
+# Local secrets (do not commit)
+secrets.js
+
+# macOS
+.DS_Store
 # Node modules (if any dependencies are added later)
 node_modules/
 
@@ -15,3 +20,6 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.log
+
+
+config.js
