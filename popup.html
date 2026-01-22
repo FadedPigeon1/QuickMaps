@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -34,6 +34,18 @@
           placeholder="To (destination)..."
           autocomplete="off"
         />
+        <div class="transport-modes">
+          <button class="mode-btn active" data-mode="driving" title="Car">
+            🚗
+          </button>
+          <button class="mode-btn" data-mode="transit" title="Transit">
+            🚌
+          </button>
+          <button class="mode-btn" data-mode="bicycling" title="Bike">
+            🚲
+          </button>
+          <button class="mode-btn" data-mode="walking" title="Walk">🚶</button>
+        </div>
         <button id="directions-button">Get Directions</button>
       </div>
 

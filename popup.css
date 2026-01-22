@@ -5,13 +5,14 @@
   box-sizing: border-box;
 }
 
-/* Body styling */
+/* Body styling - Dark Mode Base */
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   width: 400px;
   height: 500px;
   overflow: hidden;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: #121212;
+  color: #e0e0e0;
 }
 
 /* Main container */
@@ -24,46 +25,59 @@ body {
 
 /* Header section */
 .header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 12px;
+  background: #1e1e1e;
+  color: #ffffff;
+  padding: 16px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid #333;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  z-index: 10;
 }
 
 .header h1 {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.5px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(90deg, #bb86fc, #818cf8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
 }
 
 /* Directions section */
 .directions-section {
-  padding: 12px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  background: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  gap: 12px;
+  background: #1e1e1e;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 5;
 }
 
 /* Origin row with input and location button */
 .origin-row {
   display: flex;
-  gap: 8px;
+  gap: 10px;
 }
 
 /* Direction input fields */
 #origin-input,
 #destination-input {
-  padding: 10px 12px;
-  border: 2px solid #e0e0e0;
+  padding: 12px;
+  border: 1px solid #333;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 14px;
   outline: none;
-  transition: all 0.3s ease;
-  background: #f8f9fa;
+  transition: all 0.2s ease;
+  background: #2d2d2d;
+  color: #fff;
+}
+
+#origin-input::placeholder,
+#destination-input::placeholder {
+  color: #888;
 }
 
 #origin-input {
@@ -72,69 +86,107 @@ body {
 
 #origin-input:focus,
 #destination-input:focus {
-  border-color: #667eea;
-  background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-  transform: translateY(-1px);
+  border-color: #818cf8;
+  background: #333;
+  box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.2);
 }
 
 /* Use My Location button */
 #use-location-button {
-  padding: 10px 14px;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  color: white;
-  border: none;
+  padding: 0 12px;
+  background: #2d2d2d;
+  color: #bb86fc;
+  border: 1px solid #333;
   border-radius: 8px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   white-space: nowrap;
-  box-shadow: 0 4px 8px rgba(245, 87, 108, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #use-location-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(245, 87, 108, 0.4);
+  background: #333;
+  border-color: #bb86fc;
+  transform: translateY(-1px);
 }
 
 #use-location-button:active {
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(245, 87, 108, 0.3);
 }
 
 #use-location-button:disabled {
-  background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
-  color: #757575;
+  color: #666;
+  background: #252525;
+  border-color: #333;
   cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
+}
+
+/* Transport mode selection */
+.transport-modes {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 4px 0;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background: #2d2d2d;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #888;
+}
+
+.mode-btn:hover {
+  background: #333;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.mode-btn.active {
+  background: rgba(129, 140, 248, 0.15);
+  border-color: #818cf8;
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.3);
 }
 
 /* Directions button */
 #directions-button {
-  padding: 12px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 14px;
+  background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  margin-top: 4px;
 }
 
 #directions-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+  filter: brightness(1.1);
 }
 
 #directions-button:active {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
 }
 
 /* Map container - iframe for Embed API */
@@ -142,6 +194,5 @@ body {
   flex: 1;
   width: 100%;
   border: 0;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: #121212;
 }
