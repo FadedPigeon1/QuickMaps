@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Quick Maps",
   "version": "1.0.0",
-  "description": "Quick Maps lets you explore places without ever leaving your current tab. Search a location and see it on a live Google Map instantly.",
+  "description": "Quick Maps lets you explore places without ever leaving current tab. Search a location and see it on a live Google Map instantly.",
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
