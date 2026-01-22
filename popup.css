@@ -9,7 +9,7 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   width: 400px;
-  height: 500px;
+  height: 600px; /* Increased height for bigger map */
   overflow: hidden;
   background-color: #121212;
   color: #e0e0e0;
@@ -27,7 +27,7 @@ body {
 .header {
   background: #1e1e1e;
   color: #ffffff;
-  padding: 16px;
+  padding: 8px; /* Reduced padding */
   text-align: center;
   border-bottom: 1px solid #333;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
@@ -35,7 +35,7 @@ body {
 }
 
 .header h1 {
-  font-size: 18px;
+  font-size: 14px; /* Smaller title */
   font-weight: 600;
   letter-spacing: 0.5px;
   background: linear-gradient(90deg, #bb86fc, #818cf8);
@@ -47,10 +47,10 @@ body {
 
 /* Directions section */
 .directions-section {
-  padding: 16px;
+  padding: 10px; /* Reduced padding */
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px; /* Reduced gap */
   background: #1e1e1e;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 5;
@@ -59,16 +59,16 @@ body {
 /* Origin row with input and location button */
 .origin-row {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 /* Direction input fields */
 #origin-input,
 #destination-input {
-  padding: 12px;
+  padding: 8px 10px; /* Compact padding */
   border: 1px solid #333;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: 6px;
+  font-size: 12px; /* Smaller font */
   outline: none;
   transition: all 0.2s ease;
   background: #2d2d2d;
@@ -93,12 +93,12 @@ body {
 
 /* Use My Location button */
 #use-location-button {
-  padding: 0 12px;
+  padding: 0 10px;
   background: #2d2d2d;
   color: #bb86fc;
   border: 1px solid #333;
-  border-radius: 8px;
-  font-size: 12px;
+  border-radius: 6px;
+  font-size: 11px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -129,17 +129,17 @@ body {
 .transport-modes {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
-  margin: 4px 0;
+  gap: 8px;
+  margin: 2px 0;
 }
 
 .mode-btn {
   flex: 1;
-  padding: 10px;
+  padding: 6px; /* Compact button */
   border: 1px solid #333;
-  border-radius: 8px;
+  border-radius: 6px;
   background: #2d2d2d;
-  font-size: 20px;
+  font-size: 16px; /* Smaller emoji */
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -163,19 +163,19 @@ body {
 
 /* Directions button */
 #directions-button {
-  padding: 14px;
+  padding: 10px; /* Reduced button size */
   background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: 6px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 #directions-button:hover {
