@@ -113,6 +113,11 @@ document.addEventListener("DOMContentLoaded", () => {
         useLocationButton.textContent = "📍 My Location";
         useLocationButton.disabled = false;
 
+        // If no destination is set yet, center the map view on the user's location
+        if (!destinationInput.value) {
+          mapFrame.src = `https://www.google.com/maps/embed/v1/view?key=${encodeURIComponent(GOOGLE_MAPS_API_KEY)}&center=${lat},${lng}&zoom=14`;
+        }
+
         // Focus the destination input so user can type destination
         destinationInput.focus();
       },
@@ -145,4 +150,13 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     );
   });
+
+  // Auto-fill location if permission is already granted
+  if (navigator.permissions && navigator.geolocation) {
+    navigator.permissions.query({ name: "geolocation" }).then((result) => {
+      if (result.state === "granted") {
+        useLocationButton.click();
+      }
+    });
+  }
 });
